@@ -37,56 +37,63 @@
         font-family: 'Poppins', sans-serif;
         background-color: #f8fafc;
       }
-      /* Entrance Animation */
-      .animate-slide-up {
+      /* Fade and Scale Animation */
+      .animate-fade-scale {
         opacity: 0;
-        transform: translateY(30px);
-        animation: slideUp 0.6s ease-out forwards;
+        transform: scale(0.95) translateY(20px);
+        animation: fadeScale 0.8s ease-out forwards;
       }
-      @keyframes slideUp {
+      @keyframes fadeScale {
         to {
           opacity: 1;
-          transform: translateY(0);
+          transform: scale(1) translateY(0);
         }
       }
-      /* Hover Scale Effect */
-      .hover-scale {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      /* Bounce Animation for Buttons */
+      .bounce {
+        transition: transform 0.3s ease;
       }
-      .hover-scale:hover {
-        transform: scale(1.03);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      .bounce:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
       }
-      /* Button Pulse Animation */
-      .pulse {
+      /* Ripple Effect for Buttons */
+      .ripple {
         position: relative;
         overflow: hidden;
       }
-      .pulse::after {
+      .ripple::after {
         content: '';
         position: absolute;
         top: 50%;
         left: 50%;
         width: 0;
         height: 0;
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.3);
         border-radius: 50%;
         transform: translate(-50%, -50%);
-        animation: pulse 1.5s infinite;
+        transition: width 0.6s ease, height 0.6s ease;
       }
-      @keyframes pulse {
-        0% {
-          width: 0;
-          height: 0;
-          opacity: 1;
-        }
-        100% {
-          width: 200%;
-          height: 200%;
-          opacity: 0;
-        }
+      .ripple:hover::after {
+        width: 300%;
+        height: 300%;
       }
-      /* Navbar Link Underline Animation */
+      /* Card Glow Effect */
+      .card-glow {
+        position: relative;
+        transition: box-shadow 0.3s ease;
+      }
+      .card-glow:hover {
+        box-shadow: 0 0 20px rgba(45, 212, 191, 0.5);
+      }
+      /* Image Rotate Effect */
+      .image-rotate {
+        transition: transform 0.4s ease;
+      }
+      .image-rotate:hover {
+        transform: rotate(5deg) scale(1.05);
+      }
+      /* Navbar Link Slide Effect */
       .nav-link {
         position: relative;
       }
@@ -97,35 +104,38 @@
         height: 2px;
         bottom: -2px;
         left: 0;
-        background-color: #2dd4bf;
+        background: linear-gradient(to right, #2dd4bf, #3b82f6);
         transition: width 0.3s ease;
       }
       .nav-link:hover::after {
         width: 100%;
       }
-      /* Card Shine Effect */
-      .card-shine {
-        position: relative;
-        overflow: hidden;
+      /* Background Gradient Animation */
+      .bg-animated {
+        background: linear-gradient(45deg, #2dd4bf, #3b82f6, #a855f7);
+        background-size: 200% 200%;
+        animation: gradientShift 10s ease infinite;
       }
-      .card-shine::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(
-          45deg,
-          transparent,
-          rgba(255, 255, 255, 0.2),
-          transparent
-        );
-        transform: rotate(45deg);
-        transition: transform 0.5s ease;
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
       }
-      .card-shine:hover::before {
-        transform: rotate(45deg) translate(100%, 100%);
+      /* Scroll-Triggered Animation */
+      .scroll-reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      .scroll-reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
       }
     </style>
   </head>
@@ -137,12 +147,12 @@
       </p>
     </div>
     <script type="text/babel">
-      const { useState } = React;
+      const { useState, useEffect } = React;
 
       // Fallback Component
       const Fallback = () => (
         <div className="text-center p-10">
-          <h1 className="text-3xl text-red-500 font-semibold animate-slide-up">
+          <h1 className="text-3xl text-red-500 font-semibold animate-fade-scale">
             Failed to Load Portfolio
           </h1>
           <p className="text-gray-600 mt-2">
@@ -151,19 +161,39 @@
         </div>
       );
 
+      // Scroll Reveal Hook
+      const useScrollReveal = () => {
+        useEffect(() => {
+          const elements = document.querySelectorAll('.scroll-reveal');
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('visible');
+                }
+              });
+            },
+            { threshold: 0.1 }
+          );
+          elements.forEach((el) => observer.observe(el));
+          return () => observer.disconnect();
+        }, []);
+      };
+
       // Navbar Component
       const Navbar = () => {
         const [isOpen, setIsOpen] = useState(false);
+        useScrollReveal();
 
         return (
           <nav className="bg-gradient-to-r from-gray-900 to-gray-800 text-white fixed w-full z-20 top-0 shadow-lg">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex justify-between h-16 items-center">
-                <div className="flex items-center">
+                <div className="flex items-center animate-fade-scale">
                   <img
                     src="./assets/profileimg.jpg"
                     alt="Pushkar Singh Logo"
-                    className="w-10 h-10 rounded-full object-cover mr-3 border-2 border-teal-400 hover-scale"
+                    className="w-10 h-10 rounded-full object-cover mr-3 border-2 border-teal-400 image-rotate"
                   />
                   <span className="text-xl font-semibold tracking-tight">
                     Pushkar Singh
@@ -184,7 +214,7 @@
                     <a
                       key={item}
                       href={`#${item.toLowerCase()}`}
-                      className="text-sm font-medium text-gray-200 hover:text-teal-400 nav-link transition duration-300"
+                      className="text-sm font-medium text-gray-200 hover:text-teal-400 nav-link transition duration-300 scroll-reveal"
                     >
                       {item}
                     </a>
@@ -193,7 +223,7 @@
                 <div className="md:hidden flex items-center">
                   <button
                     onClick={() => setIsOpen(!isOpen)}
-                    className="text-gray-200 hover:text-teal-400 focus:outline-none"
+                    className="text-gray-200 hover:text-teal-400 focus:outline-none bounce"
                     aria-label="Toggle menu"
                   >
                     <svg
@@ -218,7 +248,7 @@
               </div>
             </div>
             {isOpen && (
-              <div className="md:hidden bg-gray-900 shadow-lg">
+              <div className="md:hidden bg-gray-900 shadow-lg animate-fade-scale">
                 <div className="px-4 pt-2 pb-4 space-y-2">
                   {[
                     'Home',
@@ -234,7 +264,7 @@
                     <a
                       key={item}
                       href={`#${item.toLowerCase()}`}
-                      className="block text-gray-200 hover:bg-gray-800 hover:text-teal-400 px-3 py-2 rounded-md text-base font-medium transition duration-300"
+                      className="block text-gray-200 hover:bg-gray-800 hover:text-teal-400 px-3 py-2 rounded-md text-base font-medium transition duration-300 scroll-reveal"
                       onClick={() => setIsOpen(false)}
                     >
                       {item}
@@ -248,44 +278,47 @@
       };
 
       // Hero Component
-      const Hero = () => (
-        <section
-          id="home"
-          className="bg-gradient-to-br from-teal-500 via-blue-600 to-purple-700 min-h-screen flex items-center justify-center text-white pt-16"
-        >
-          <div className="text-center px-4 animate-slide-up">
-            <img
-              src="./assets/profileimg.jpg"
-              alt="Pushkar Singh Profile Picture"
-              className="w-36ල
-              w-36 h-36 rounded-full mx-auto mb-6 object-cover shadow-xl border-4 border-white/30 hover-scale"
-            />
-            <h1 className="text-5xl md:text-6xl font-bold mb-4 tracking-tight">
-              Hi, I'm Pushkar Singh
-            </h1>
-            <p className="text-xl md:text-2xl mb-6 font-light max-w-xl mx-auto">
-              Game & Software Developer
-            </p>
-            <a
-              href="#contact"
-              className="inline-block bg-white text-teal-600 px-8 py-3 rounded-full font-semibold text-lg hover:bg-teal-100 pulse transition duration-300 shadow-lg"
-            >
-              Get in Touch
-            </a>
-          </div>
-        </section>
-      );
+      const Hero = () => {
+        useScrollReveal();
+        return (
+          <section
+            id="home"
+            className="bg-animated min-h-screen flex items-center justify-center text-white pt-16"
+          >
+            <div className="text-center px-4 animate-fade-scale">
+              <img
+                src="./assets/profileimg.jpg"
+                alt="Pushkar Singh Profile Picture"
+                className="w-36 h-36 rounded-full mx-auto mb-6 object-cover shadow-xl border-4 border-white/30 image-rotate"
+              />
+              <h1 className="text-5xl md:text-6xl font-bold mb-4 tracking-tight scroll-reveal">
+                Hi, I'm Pushkar Singh
+              </h1>
+              <p className="text-xl md:text-2xl mb-6 font-light max-w-xl mx-auto scroll-reveal">
+                Game & Software Developer
+              </p>
+              <a
+                href="#contact"
+                className="inline-block bg-white text-teal-600 px-8 py-3 rounded-full font-semibold text-lg ripple bounce transition duration-300 shadow-lg"
+              >
+                Get in Touch
+              </a>
+            </div>
+          </section>
+        );
+      };
 
       // About Component
       const About = () => {
         const [isAboutOpen, setIsAboutOpen] = useState(false);
+        useScrollReveal();
         return (
           <section id="about" className="py-24 bg-gray-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-slide-up">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-fade-scale scroll-reveal">
                 About Me
               </h2>
-              <p className="text-lg text-gray-700 text-center max-w-4xl mx-auto mb-8 animate-slide-up">
+              <p className="text-lg text-gray-700 text-center max-w-4xl mx-auto mb-8 scroll-reveal">
                 <strong>I’m a Game, Web, and Software Developer </strong>
               </p>
               <div
@@ -293,14 +326,14 @@
                   isAboutOpen ? 'max-h-[1000px]' : 'max-h-0'
                 }`}
               >
-                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-6 animate-slide-up">
+                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-6 scroll-reveal">
                   with hands-on experience in <strong>Unity (C#)</strong>,{' '}
                   <strong>Java</strong>, <strong>Python</strong>, and
                   object-oriented programming. I specialize in building
                   interactive and engaging experiences that combine creativity
                   with functionality.
                 </p>
-                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-6 animate-slide-up">
+                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-6 scroll-reveal">
                   As the creator of the <strong>Kidutainment Game App</strong>,
                   I’ve developed several educational mini-games that help
                   children develop cognitive, logical, and creative skills. My
@@ -308,7 +341,7 @@
                   <strong>IRJMETS</strong>, showcasing the impact of gamified
                   learning in early education.
                 </p>
-                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto animate-slide-up">
+                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto scroll-reveal">
                   During my internship at <strong>Wollybee LLP</strong>, I
                   refined my skills in game design, UI/UX development, asset
                   creation, and Agile collaboration. I’m passionate about using
@@ -320,7 +353,7 @@
               <div className="text-center mt-6">
                 <button
                   onClick={() => setIsAboutOpen(!isAboutOpen)}
-                  className="bg-teal-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-teal-700 pulse transition duration-300 shadow-md"
+                  className="bg-teal-600 text-white px-6 py-3 rounded-full font-semibold ripple bounce transition duration-300 shadow-md"
                 >
                   {isAboutOpen ? 'Less' : 'More'}
                 </button>
@@ -331,58 +364,62 @@
       };
 
       // Education Component
-      const Education = () => (
-        <section id="education" className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-slide-up">
-              Education
-            </h2>
-            <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                {
-                  title: 'B.Tech CSE',
-                  details: 'Medi-Caps University, 2021–2025, 8.61/10',
-                },
-                {
-                  title: '12th CBSE',
-                  details: 'Pioneer Convent School, 2019–2020, 75.2%',
-                },
-                {
-                  title: '10th CBSE',
-                  details: 'St. Michael’s School, 2017–2018, 77.8%',
-                },
-              ].map((edu, index) => (
-                <div
-                  key={edu.title}
-                  className="bg-gray-50 p-6 rounded-xl shadow-md hover-scale card-shine transition-shadow animate-slide-up"
-                  style={{ animationDelay: `${index * 0.2}s` }}
-                >
-                  <h3 className="text-lg font-semibold mb-2 text-gray-800">
-                    {edu.title}
-                  </h3>
-                  <p className="text-base text-gray-600">{edu.details}</p>
-                </div>
-              ))}
+      const Education = () => {
+        useScrollReveal();
+        return (
+          <section id="education" className="py-24 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-fade-scale scroll-reveal">
+                Education
+              </h2>
+              <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                  {
+                    title: 'B.Tech CSE',
+                    details: 'Medi-Caps University, 2021–2025, 8.61/10',
+                  },
+                  {
+                    title: '12th CBSE',
+                    details: 'Pioneer Convent School, 2019–2020, 75.2%',
+                  },
+                  {
+                    title: '10th CBSE',
+                    details: 'St. Michael’s School, 2017–2018, 77.8%',
+                  },
+                ].map((edu, index) => (
+                  <div
+                    key={edu.title}
+                    className="bg-gray-50 p-6 rounded-xl shadow-md card-glow scroll-reveal"
+                    style={{ animationDelay: `${index * 0.2}s` }}
+                  >
+                    <h3 className="text-lg font-semibold mb-2 text-gray-800">
+                      {edu.title}
+                    </h3>
+                    <p className="text-base text-gray-600">{edu.details}</p>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
-      );
+          </section>
+        );
+      };
 
       // Experience Component
       const Experience = () => {
         const [isExperienceOpen, setIsExperienceOpen] = useState(false);
+        useScrollReveal();
         return (
           <section id="experience" className="py-24 bg-gray-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-slide-up">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-fade-scale scroll-reveal">
                 Experience
               </h2>
-              <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md hover-scale card-shine transition-shadow animate-slide-up">
+              <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md card-glow scroll-reveal">
                 <div className="flex items-center mb-4">
                   <img
                     src="./assets/game.png"
                     alt="Wollybee LLP Logo"
-                    className="w-12 h-10 rounded-full mb-2 border-2 border-teal-400 hover-scale"
+                    className="w-12 h-10 rounded-full border-2 border-teal-400 image-rotate"
                   />
                   <h3 className="text-xl font-semibold text-gray-800 ml-3">
                     Game Development Intern
@@ -398,7 +435,7 @@
                     isExperienceOpen ? 'max-h-[500px]' : 'max-h-0'
                   }`}
                 >
-                  <ul className="list-disc pl-5 text-gray-600 space-y-2 animate-slide-up">
+                  <ul className="list-disc pl-5 text-gray-600 space-y-2 scroll-reveal">
                     <li>
                       Developed educational games using Unity and C#, enhancing
                       kid's learning in English, math, and environmental
@@ -420,7 +457,7 @@
                 <div className="text-center mt-6">
                   <button
                     onClick={() => setIsExperienceOpen(!isExperienceOpen)}
-                    className="bg-teal-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-teal-700 pulse transition duration-300 shadow-md"
+                    className="bg-teal-600 text-white px-6 py-3 rounded-full font-semibold ripple bounce transition duration-300 shadow-md"
                   >
                     {isExperienceOpen ? 'Less' : 'More'}
                   </button>
@@ -497,24 +534,24 @@
             image: './assets/BrickSmasher.png',
           },
         ];
-
+        useScrollReveal();
         return (
           <section id="projects" className="py-24 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-slide-up">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-fade-scale scroll-reveal">
                 My Projects
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {projects.map((project, index) => (
                   <div
                     key={project.title}
-                    className="bg-gray-50 p-6 rounded-xl shadow-md hover-scale card-shine transition-shadow duration-300 animate-slide-up"
+                    className="bg-gray-50 p-6 rounded-xl shadow-md card-glow scroll-reveal"
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <img
                       src={project.image}
                       alt={`Screenshot of ${project.title}`}
-                      className="w-full h-48 object-cover rounded-lg mb-4 shadow-sm"
+                      className="w-full h-48 object-cover rounded-lg mb-4 shadow-sm image-rotate"
                     />
                     <h3 className="text-xl font-semibold mb-2 text-gray-800">
                       {project.title}
@@ -527,7 +564,7 @@
                     </p>
                     <a
                       href={project.link}
-                      className="text-teal-600 hover:text-teal-700 font-semibold transition duration-300"
+                      className="text-teal-600 hover:text-teal-700 font-semibold transition duration-300 ripple"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -665,24 +702,24 @@
             logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/filezilla/filezilla-plain.svg',
           },
         ];
-
+        useScrollReveal();
         return (
           <section id="skills" className="py-24 bg-gray-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-slide-up">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-fade-scale scroll-reveal">
                 My Skills
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
                 {skills.map((skill, index) => (
                   <div
                     key={skill.name}
-                    className="bg-white p-4 rounded-xl shadow-md flex flex-col items-center hover-scale card-shine transition-shadow duration-300 animate-slide-up"
+                    className="bg-white p-4 rounded-xl shadow-md card-glow scroll-reveal"
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
                     <img
                       src={skill.logo}
                       alt={`${skill.name} logo`}
-                      className="w-12 h-12 mb-3 hover-scale"
+                      className="w-12 h-12 mb-3 image-rotate"
                     />
                     <p className="text-gray-700 text-center text-sm font-medium">
                       {skill.name}
@@ -696,99 +733,103 @@
       };
 
       // Achievements Component
-      const Achievements = () => (
-        <section id="achievements" className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-slide-up">
-              Achievements & Certifications
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-gray-50 p-6 rounded-xl shadow-md hover-scale card-shine transition-shadow animate-slide-up">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">
-                  Achievements
-                </h3>
-                <ul className="list-disc pl-5 text-gray-600 space-y-2">
-                  <li>State Level Athlete in 3000m, 2018</li>
-                  <li>State Level Footballer, 2018</li>
-                </ul>
-              </div>
-              <div className="bg-gray-50 p-6 rounded-xl shadow-md hover-scale card-shine transition-shadow animate-slide-up">
-                <h3 className="text-xl font-semibold mb-4 text-gray-800">
-                  Certifications
-                </h3>
-                <ul className="list-none space-y-4">
-                  <li className="flex items-start">
-                    <a
-                      href="https://coursera.org/share/68f27b882f1069c19638f8c481baef43"
-                      className="text-teal-600 hover:text-teal-700 transition duration-300"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <img
-                        src="./assets/GoogleCyber.png"
-                        alt="Google Cybersecurity Certificate"
-                        className="w-24 h-16 rounded-md mr-3 object-cover shadow-sm hover-scale"
-                      />
-                    </a>
-                    <div>
+      const Achievements = () => {
+        useScrollReveal();
+        return (
+          <section id="achievements" className="py-24 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-fade-scale scroll-reveal">
+                Achievements & Certifications
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-gray-50 p-6 rounded-xl shadow-md card-glow scroll-reveal">
+                  <h3 className="text-xl font-semibold mb-4 text-gray-800">
+                    Achievements
+                  </h3>
+                  <ul className="list-disc pl-5 text-gray-600 space-y-2">
+                    <li>State Level Athlete in 3000m, 2018</li>
+                    <li>State Level Footballer, 2018</li>
+                  </ul>
+                </div>
+                <div className="bg-gray-50 p-6 rounded-xl shadow-md card-glow scroll-reveal">
+                  <h3 className="text-xl font-semibold mb-4 text-gray-800">
+                    Certifications
+                  </h3>
+                  <ul className="list-none space-y-4">
+                    <li className="flex items-start">
                       <a
                         href="https://coursera.org/share/68f27b882f1069c19638f8c481baef43"
-                        className="text-teal-600 hover:text-teal-700 font-semibold"
+                        className="text-teal-600 hover:text-teal-700 transition duration-300"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Google Cybersecurity Specialization
+                        <img
+                          src="./assets/GoogleCyber.png"
+                          alt="Google Cybersecurity Certificate"
+                          className="w-24 h-16 rounded-md mr-3 object-cover shadow-sm image-rotate"
+                        />
                       </a>
-                      <p className="text-gray-600 text-sm mt-1">
-                        (Skills: Intrusion Detection, SQL, Cybersecurity, Linux,
-                        SVG)
-                      </p>
-                    </div>
-                  </li>
-                  <li className="flex items-start">
-                    <a
-                      href="https://coursera.org/share/15f2abbd03176c034f3df0606f2a4412"
-                      className="text-teal-600 hover:text-teal-700 transition duration-300"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <img
-                        src="./assets/GoogleUX.png"
-                        alt="Google UX Design Certificate"
-                        className="w-24 h-16 rounded-md mr-3 object-cover shadow-sm hover-scale"
-                      />
-                    </a>
-                    <div>
+                      <div>
+                        <a
+                          href="https://coursera.org/share/68f27b882f1069c19638f8c481baef43"
+                          className="text-teal-600 hover:text-teal-700 font-semibold"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Google Cybersecurity Specialization
+                        </a>
+                        <p className="text-gray-600 text-sm mt-1">
+                          (Skills: Intrusion Detection, SQL, Cybersecurity,
+                          Linux, SVG)
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
                       <a
                         href="https://coursera.org/share/15f2abbd03176c034f3df0606f2a4412"
-                        className="text-teal-600 hover:text-teal-700 font-semibold"
+                        className="text-teal-600 hover:text-teal-700 transition duration-300"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        Google UX Design Specialization
+                        <img
+                          src="./assets/GoogleUX.png"
+                          alt="Google UX Design Certificate"
+                          className="w-24 h-16 rounded-md mr-3 object-cover shadow-sm image-rotate"
+                        />
                       </a>
-                      <p className="text-gray-600 text-sm mt-1">
-                        (Skills: Figma, UX, Adobe XD, Wireframing)
-                      </p>
-                    </div>
-                  </li>
-                </ul>
+                      <div>
+                        <a
+                          href="https://coursera.org/share/15f2abbd03176c034f3df0606f2a4412"
+                          className="text-teal-600 hover:text-teal-700 font-semibold"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Google UX Design Specialization
+                        </a>
+                        <p className="text-gray-600 text-sm mt-1">
+                          (Skills: Figma, UX, Adobe XD, Wireframing)
+                        </p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
-      );
+          </section>
+        );
+      };
 
       // Research Component
       const Research = () => {
         const [isResearchOpen, setIsResearchOpen] = useState(false);
+        useScrollReveal();
         return (
           <section id="research" className="py-24 bg-gray-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-slide-up">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-fade-scale scroll-reveal">
                 Research Work
               </h2>
-              <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md hover-scale card-shine transition-shadow animate-slide-up">
+              <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md card-glow scroll-reveal">
                 <h3 className="text-xl font-semibold mb-3 text-gray-800">
                   Merging Fun and Learning: The Kidutainment Game App for
                   Cognitive Skill Development
@@ -809,7 +850,7 @@
                     <img
                       src="./assets/ResearchCert.png"
                       alt="Research Certificate"
-                      className="w-24 h-16 rounded-md object-cover shadow-sm hover-scale"
+                      className="w-24 h-16 rounded-md object-cover shadow-sm image-rotate"
                     />
                     <p className="text-teal-600 text-sm text-center mt-2 hover:underline">
                       View Certificate
@@ -824,7 +865,7 @@
                     <img
                       src="./assets/ResearchThumb.png"
                       alt="Research Paper Thumbnail"
-                      className="w-24 h-16 rounded-md object-cover shadow-sm hover-scale"
+                      className="w-24 h-16 rounded-md object-cover shadow-sm image-rotate"
                     />
                     <p className="text-teal-600 text-sm text-center mt-2 hover:underline">
                       View Research Paper
@@ -836,7 +877,7 @@
                     isResearchOpen ? 'max-h-[500px]' : 'max-h-0'
                   }`}
                 >
-                  <p className="text-gray-600 mb-4 animate-slide-up">
+                  <p className="text-gray-600 mb-4 scroll-reveal">
                     Co-authored a research paper presenting the development of
                     the Kidutainment Game App—an interactive educational
                     platform designed to merge entertainment with learning for
@@ -852,7 +893,7 @@
                 <div className="text-center">
                   <button
                     onClick={() => setIsResearchOpen(!isResearchOpen)}
-                    className="bg-teal-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-teal-700 pulse transition duration-300 shadow-md"
+                    className="bg-teal-600 text-white px-6 py-3 rounded-full font-semibold ripple bounce transition duration-300 shadow-md"
                   >
                     {isResearchOpen ? 'Less' : 'More'}
                   </button>
@@ -864,82 +905,82 @@
       };
 
       // Contact Component
-      const Contact = () => (
-        <section
-          id="contact"
-          className="py-24 bg-gradient-to-r from-gray-900 to-gray-800 text-white"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-bold text-center mb-12 animate-slide-up">
-              Contact Me
-            </h2>
-            <div className="max-w-lg mx-auto text-center">
-              <p className="text-lg mb-8 font-light animate-slide-up">
-                Connect with me via email or social media!
-              </p>
-              <div className="flex justify-center space-x-8 mb-6">
-                {[
-                  {
-                    href: 'mailto:pushkar.singh1102@gmail.com',
-                    icon: 'fas fa-envelope',
-                    title: 'Email',
-                  },
-                  {
-                    href: 'https://www.linkedin.com/in/pushkar-singh-a05607237',
-                    icon: 'fab fa-linkedin',
-                    title: 'LinkedIn',
-                  },
-                  {
-                    href: 'https://github.com/pushkar1102',
-                    icon: 'fab fa-github',
-                    title: 'GitHub',
-                  },
-                  {
-                    href: 'https://www.codechef.com/users/pushkarsingh11',
-                    icon: 'fas fa-code',
-                    title: 'Codechef',
-                  },
-                  {
-                    href: 'https://g.dev/PushkarSingh_Medicaps',
-                    icon: 'fab fa-google',
-                    title: 'Google Developer Profile',
-                  },
-                  {
-                    href: './assets/Resume.pdf',
-                    icon: 'fas fa-file-download',
-                    title: 'Download Resume',
-                    download: true,
-                  },
-                ].map((link, index) => (
-                  <a
-                    key={link.title}
-                    href={link.href}
-                    className="text-teal-400 hover:text-teal-300 transition duration-300 transform hover:scale-125"
-                    target={link.download ? undefined : '_blank'}
-                    rel={link.download ? undefined : 'noopener noreferrer'}
-                    title={link.title}
-                    {...(link.download ? { download: true } : {})}
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <i className={`${link.icon} fa-2x`}></i>
-                  </a>
-                ))}
+      const Contact = () => {
+        useScrollReveal();
+        return (
+          <section id="contact" className="py-24 bg-animated text-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-4xl font-bold text-center mb-12 animate-fade-scale scroll-reveal">
+                Contact Me
+              </h2>
+              <div className="max-w-lg mx-auto text-center">
+                <p className="text-lg mb-8 font-light scroll-reveal">
+                  Connect with me via email or social media!
+                </p>
+                <div className="flex justify-center space-x-8 mb-6">
+                  {[
+                    {
+                      href: 'mailto:pushkar.singh1102@gmail.com',
+                      icon: 'fas fa-envelope',
+                      title: 'Email',
+                    },
+                    {
+                      href: 'https://www.linkedin.com/in/pushkar-singh-a05607237',
+                      icon: 'fab fa-linkedin',
+                      title: 'LinkedIn',
+                    },
+                    {
+                      href: 'https://github.com/pushkar1102',
+                      icon: 'fab fa-github',
+                      title: 'GitHub',
+                    },
+                    {
+                      href: 'https://www.codechef.com/users/pushkarsingh11',
+                      icon: 'fas fa-code',
+                      title: 'Codechef',
+                    },
+                    {
+                      href: 'https://g.dev/PushkarSingh_Medicaps',
+                      icon: 'fab fa-google',
+                      title: 'Google Developer Profile',
+                    },
+                    {
+                      href: './assets/Resume.pdf',
+                      icon: 'fas fa-file-download',
+                      title: 'Download Resume',
+                      download: true,
+                    },
+                  ].map((link, index) => (
+                    <a
+                      key={link.title}
+                      href={link.href}
+                      className="text-teal-300 hover:text-teal-200 transition duration-300 transform hover:scale-125 scroll-reveal"
+                      target={link.download ? undefined : '_blank'}
+                      rel={link.download ? undefined : 'noopener noreferrer'}
+                      title={link.title}
+                      {...(link.download ? { download: true } : {})}
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <i className={`${link.icon} fa-2x`}></i>
+                    </a>
+                  ))}
+                </div>
+                <p className="text-sm text-gray-300 scroll-reveal">
+                  Email: pushkar.singh1102@gmail.com (copy if link doesn't work)
+                  <br />
+                  Mobile: (+91)8827114521
+                </p>
               </div>
-              <p className="text-sm text-gray-300 animate-slide-up">
-                Email: pushkar.singh1102@gmail.com (copy if link doesn't work)
-                <br />
-                Mobile: (+91)8827114521
-              </p>
             </div>
-          </div>
-        </section>
-      );
+          </section>
+        );
+      };
 
       // Footer Component
       const Footer = () => (
         <footer className="bg-gray-800 text-white py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p className="text-center text-gray-300 animate-slide-up">
+            <p className="text-center text-gray-300 animate-fade-scale scroll-reveal">
               © {new Date().getFullYear()} Pushkar Singh. All rights reserved.
             </p>
           </div>
