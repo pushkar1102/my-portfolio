@@ -24,15 +24,62 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
     />
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       html {
         scroll-behavior: smooth;
+      }
+        background-color: #f8fafc;
+      }
+      /* Entrance Animation */
+      .animate-slide-up {
+        position: relative;
+        overflow: hidden;
+        content: '';
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+      }
+      @keyframes pulse {
+        0% {
+          width: 0;
+      }
+      /* Navbar Link Underline Animation */
+      .nav-link {
+        position: relative;
+      }
+      .nav-link::after {
+        content: '';
+        height: 2px;
+        background-color: #2dd4bf;
+        transition: width 0.3s ease;
+      }
+      .nav-link:hover::after {
+      /* Card Shine Effect */
+      .card-shine::before {
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(
+          45deg,
+          transparent,
+        );
+        transform: rotate(45deg);
+      }
+      .card-shine:hover::before {
+        transform: rotate(45deg) translate(100%, 100%);
       }
     </style>
   </head>
   <body>
     <div id="root">
       <p>
+      <p class="text-center p-10 text-gray-500">
         Loading portfolio... If this persists, check the console (F12) for
         errors.
       </p>
@@ -45,6 +92,11 @@
         <div className="text-center p-10">
           <h1 className="text-2xl text-red-600">Failed to Load Portfolio</h1>
           <p>Please check the console (F12) for errors or refresh the page.</p>
+            Failed to Load Portfolio
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Please check the console (F12) for errors or refresh the page.
+          </p>
         </div>
       );
 
@@ -53,18 +105,19 @@
         const [isOpen, setIsOpen] = useState(false);
 
         return (
-          <nav className="bg-gray-900 text-white fixed w-full z-10 top-0 shadow-lg">
+          <nav className="bg-gradient-to-r from-gray-900 to-gray-800 text-white fixed w-full z-20 top-0 shadow-lg">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex justify-between h-16">
                 <div className="flex items-center">
                   <img
                     src="./assets/profileimg.jpg"
                     alt="Pushkar Singh Logo"
-                    className="w-8 h-8 rounded-full object-cover mr-2"
+                    className="w-10 h-10 rounded-full object-cover mr-3 border-2 border-teal-400 hover-scale"
                   />
-                  <span className="text-xl font-bold">Pushkar Singh</span>
+                  <span className="text-xl font-semibold tracking-tight">
+                    Pushkar Singh
+                  </span>
                 </div>
-                <div className="hidden md:flex items-center space-x-4">
+                <div className="hidden md:flex items-center space-x-6">
                   {[
                     'Home',
                     'About',
@@ -79,7 +132,7 @@
                     <a
                       key={item}
                       href={`#${item.toLowerCase()}`}
-                      className="hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium transition duration-300"
+                      className="text-sm font-medium text-gray-200 hover:text-teal-400 nav-link transition duration-300"
                     >
                       {item}
                     </a>
@@ -88,7 +141,8 @@
                 <div className="md:hidden flex items-center">
                   <button
                     onClick={() => setIsOpen(!isOpen)}
-                    className="text-gray-300 hover:text-white focus:outline-none"
+                    className="text-gray-200 hover:text-teal-400 focus:outline-none"
+                    aria-label="Toggle menu"
                   >
                     <svg
                       className="h-6 w-6"
@@ -112,8 +166,8 @@
               </div>
             </div>
             {isOpen && (
-              <div className="md:hidden bg-gray-900">
-                <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              <div className="md:hidden bg-gray-900 shadow-lg">
+                <div className="px-4 pt-2 pb-4 space-y-2">
                   {[
                     'Home',
                     'About',
@@ -128,7 +182,7 @@
                     <a
                       key={item}
                       href={`#${item.toLowerCase()}`}
-                      className="block hover:bg-gray-700 px-3 py-2 rounded-md text-base font-medium"
+                      className="block text-gray-200 hover:bg-gray-800 hover:text-teal-400 px-3 py-2 rounded-md text-base font-medium transition duration-300"
                       onClick={() => setIsOpen(false)}
                     >
                       {item}
@@ -145,23 +199,24 @@
       const Hero = () => (
         <section
           id="home"
-          className="bg-gradient-to-r from-teal-500 to-blue-600 h-screen flex items-center justify-center text-white"
+          className="bg-gradient-to-br from-teal-500 via-blue-600 to-purple-700 min-h-screen flex items-center justify-center text-white pt-16"
         >
-          <div className="text-center">
+          <div className="text-center px-4 animate-slide-up">
             <img
               src="./assets/profileimg.jpg"
               alt="Pushkar Singh Profile Picture"
-              className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
+              className="w-36ල
+              w-36 h-36 rounded-full mx-auto mb-6 object-cover shadow-xl border-4 border-white/30 hover-scale"
             />
-            <h1 className="text-5xl md:text-6xl font-bold mb-4">
+            <h1 className="text-5xl md:text-6xl font-bold mb-4 tracking-tight">
               Hi, I'm Pushkar Singh
             </h1>
-            <p className="text-xl md:text-2xl mb-6">
+            <p className="text-xl md:text-2xl mb-6 font-light max-w-xl mx-auto">
               Game & Software Developer
             </p>
             <a
               href="#contact"
-              className="bg-white text-teal-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300"
+              className="inline-block bg-white text-teal-600 px-8 py-3 rounded-full font-semibold text-lg hover:bg-teal-100 pulse transition duration-300 shadow-lg"
             >
               Get in Touch
             </a>
@@ -173,12 +228,12 @@
       const About = () => {
         const [isAboutOpen, setIsAboutOpen] = useState(false);
         return (
-          <section id="about" className="py-20 bg-gray-100">
+          <section id="about" className="py-24 bg-gray-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-4xl font-bold text-center mb-10 text-gray-800">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-slide-up">
                 About Me
               </h2>
-              <p className="text-lg text-gray-700 text-center max-w-4xl mx-auto mb-8">
+              <p className="text-lg text-gray-700 text-center max-w-4xl mx-auto mb-8 animate-slide-up">
                 <strong>I’m a Game, Web, and Software Developer </strong>
               </p>
               <div
@@ -186,14 +241,14 @@
                   isAboutOpen ? 'max-h-[1000px]' : 'max-h-0'
                 }`}
               >
-                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-6">
+                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-6 animate-slide-up">
                   with hands-on experience in <strong>Unity (C#)</strong>,{' '}
                   <strong>Java</strong>, <strong>Python</strong>, and
                   object-oriented programming. I specialize in building
                   interactive and engaging experiences that combine creativity
                   with functionality.
                 </p>
-                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-6">
+                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-6 animate-slide-up">
                   As the creator of the <strong>Kidutainment Game App</strong>,
                   I’ve developed several educational mini-games that help
                   children develop cognitive, logical, and creative skills. My
@@ -201,7 +256,7 @@
                   <strong>IRJMETS</strong>, showcasing the impact of gamified
                   learning in early education.
                 </p>
-                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto">
+                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto animate-slide-up">
                   During my internship at <strong>Wollybee LLP</strong>, I
                   refined my skills in game design, UI/UX development, asset
                   creation, and Agile collaboration. I’m passionate about using
@@ -210,10 +265,10 @@
                   developer.
                 </p>
               </div>
-              <div className="text-center mt-4">
+              <div className="text-center mt-6">
                 <button
                   onClick={() => setIsAboutOpen(!isAboutOpen)}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
+                  className="bg-teal-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-teal-700 pulse transition duration-300 shadow-md"
                 >
                   {isAboutOpen ? 'Less' : 'More'}
                 </button>
@@ -225,30 +280,37 @@
 
       // Education Component
       const Education = () => (
-        <section id="education" className="py-20 bg-white">
+        <section id="education" className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-bold text-center mb-10 text-gray-800">
+            <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-slide-up">
               Education
             </h2>
-            <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-gray-100 p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                <h3 className="text-lg font-semibold mb-1">B.Tech CSE</h3>
-                <p className="text-base text-gray-600">
-                  Medi-Caps University, 2021–2025, 8.61/10
-                </p>
-              </div>
-              <div className="bg-gray-100 p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                <h3 className="text-lg font-semibold mb-1">12th CBSE</h3>
-                <p className="text-base text-gray-600">
-                  Pioneer Convent School, 2019–2020, 75.2%
-                </p>
-              </div>
-              <div className="bg-gray-100 p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                <h3 className="text-lg font-semibold mb-1">10th CBSE</h3>
-                <p className="text-base text-gray-600">
-                  St. Michael’s School, 2017–2018, 77.8%
-                </p>
-              </div>
+            <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                {
+                  title: 'B.Tech CSE',
+                  details: 'Medi-Caps University, 2021–2025, 8.61/10',
+                },
+                {
+                  title: '12th CBSE',
+                  details: 'Pioneer Convent School, 2019–2020, 75.2%',
+                },
+                {
+                  title: '10th CBSE',
+                  details: 'St. Michael’s School, 2017–2018, 77.8%',
+                },
+              ].map((edu, index) => (
+                <div
+                  key={edu.title}
+                  className="bg-gray-50 p-6 rounded-xl shadow-md hover-scale card-shine transition-shadow animate-slide-up"
+                  style={{ animationDelay: `${index * 0.2}s` }}
+                >
+                  <h3 className="text-lg font-semibold mb-2 text-gray-800">
+                    {edu.title}
+                  </h3>
+                  <p className="text-base text-gray-600">{edu.details}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -258,41 +320,33 @@
       const Experience = () => {
         const [isExperienceOpen, setIsExperienceOpen] = useState(false);
         return (
-          <section id="experience" className="py-20 bg-gray-100">
+          <section id="experience" className="py-24 bg-gray-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-4xl font-bold text-center mb-10 text-gray-800">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-slide-up">
                 Experience
               </h2>
-              <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-                <div className="flex items-center mb-2">
+              <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md hover-scale card-shine transition-shadow animate-slide-up">
+                <div className="flex items-center mb-4">
                   <img
                     src="./assets/game.png"
                     alt="Wollybee LLP Logo"
-                    className="w-12 h-10 rounded-full mb-2"
+                    className="w-12 h-10 rounded-full mb-2 border-2 border-teal-400 hover-scale"
                   />
-                  <h3 className="text-xl font-semibold">
+                  <h3 className="text-xl font-semibold text-gray-800 ml-3">
                     Game Development Intern
                   </h3>
                 </div>
-                <p className="text-gray-600 mb-2">
+                <p className="text-gray-600 mb-4">
                   Wollybee LLP, Indore
                   <br />
                   June 2024–September 2024
                 </p>
-                <div className="text-center mb-4">
-                  <button
-                    onClick={() => setIsExperienceOpen(!isExperienceOpen)}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
-                  >
-                    {isExperienceOpen ? 'Less' : 'More'}
-                  </button>
-                </div>
                 <div
                   className={`overflow-hidden transition-all duration-500 ease-in-out ${
                     isExperienceOpen ? 'max-h-[500px]' : 'max-h-0'
                   }`}
                 >
-                  <ul className="list-disc pl-5 text-gray-600">
+                  <ul className="list-disc pl-5 text-gray-600 space-y-2 animate-slide-up">
                     <li>
                       Developed educational games using Unity and C#, enhancing
                       kid's learning in English, math, and environmental
@@ -310,6 +364,14 @@
                       Conducted playtesting and debugging, reducing bugs by 25%.
                     </li>
                   </ul>
+                </div>
+                <div className="text-center mt-6">
+                  <button
+                    onClick={() => setIsExperienceOpen(!isExperienceOpen)}
+                    className="bg-teal-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-teal-700 pulse transition duration-300 shadow-md"
+                  >
+                    {isExperienceOpen ? 'Less' : 'More'}
+                  </button>
                 </div>
               </div>
             </div>
@@ -385,32 +447,37 @@
         ];
 
         return (
-          <section id="projects" className="py-20 bg-white">
+          <section id="projects" className="py-24 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-4xl font-bold text-center mb-10 text-gray-800">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-slide-up">
                 My Projects
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {projects.map((project) => (
+                {projects.map((project, index) => (
                   <div
                     key={project.title}
-                    className="bg-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    className="bg-gray-50 p-6 rounded-xl shadow-md hover-scale card-shine transition-shadow duration-300 animate-slide-up"
+                    style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <img
                       src={project.image}
                       alt={`Screenshot of ${project.title}`}
-                      className="w-45 h-45 object-cover rounded-md mb-4"
+                      className="w-full h-48 object-cover rounded-lg mb-4 shadow-sm"
                     />
-                    <h3 className="text-xl font-semibold mb-2">
+                    <h3 className="text-xl font-semibold mb-2 text-gray-800">
                       {project.title}
                     </h3>
-                    <p className="text-gray-600 mb-4">{project.description}</p>
+                    <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                      {project.description}
+                    </p>
                     <p className="text-gray-500 text-sm mb-4">
                       <strong>Skills:</strong> {project.skills.join(', ')}
                     </p>
                     <a
                       href={project.link}
-                      className="text-blue-600 hover:underline font-medium"
+                      className="text-teal-600 hover:text-teal-700 font-semibold transition duration-300"
+                      target="_blank"
+                      rel="noopener noreferrer"
                     >
                       View Project
                     </a>
@@ -548,23 +615,24 @@
         ];
 
         return (
-          <section id="skills" className="py-20 bg-gray-100">
+          <section id="skills" className="py-24 bg-gray-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-4xl font-bold text-center mb-10 text-gray-800">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-slide-up">
                 My Skills
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-                {skills.map((skill) => (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+                {skills.map((skill, index) => (
                   <div
                     key={skill.name}
-                    className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center hover:shadow-xl transition-shadow duration-300"
+                    className="bg-white p-4 rounded-xl shadow-md flex flex-col items-center hover-scale card-shine transition-shadow duration-300 animate-slide-up"
+                    style={{ animationDelay: `${index * 0.05}s` }}
                   >
                     <img
                       src={skill.logo}
                       alt={`${skill.name} logo`}
-                      className="w-12 h-12 mb-2"
+                      className="w-12 h-12 mb-3 hover-scale"
                     />
-                    <p className="text-gray-700 text-center text-sm">
+                    <p className="text-gray-700 text-center text-sm font-medium">
                       {skill.name}
                     </p>
                   </div>
@@ -577,58 +645,80 @@
 
       // Achievements Component
       const Achievements = () => (
-        <section id="achievements" className="py-20 bg-white">
+        <section id="achievements" className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-bold text-center mb-10 text-gray-800">
+            <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-slide-up">
               Achievements & Certifications
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl font-semibold mb-2">Achievements</h3>
-                <ul className="list-disc pl-5 text-gray-600">
+              <div className="bg-gray-50 p-6 rounded-xl shadow-md hover-scale card-shine transition-shadow animate-slide-up">
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
+                  Achievements
+                </h3>
+                <ul className="list-disc pl-5 text-gray-600 space-y-2">
                   <li>State Level Athlete in 3000m, 2018</li>
                   <li>State Level Footballer, 2018</li>
                 </ul>
               </div>
-              <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl font-semibold mb-2">Certifications</h3>
-                <ul className="list-disc pl-5 text-gray-600 space-y-4">
-                  <li className="flex items-center">
+              <div className="bg-gray-50 p-6 rounded-xl shadow-md hover-scale card-shine transition-shadow animate-slide-up">
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
+                  Certifications
+                </h3>
+                <ul className="list-none space-y-4">
+                  <li className="flex items-start">
                     <a
                       href="https://coursera.org/share/68f27b882f1069c19638f8c481baef43"
-                      className="text-blue-600 hover:underline"
+                      className="text-teal-600 hover:text-teal-700 transition duration-300"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       <img
                         src="./assets/GoogleCyber.png"
                         alt="Google Cybersecurity Certificate"
-                        className="w-24 h-16 rounded-md mr-2"
+                        className="w-24 h-16 rounded-md mr-3 object-cover shadow-sm hover-scale"
                       />
-                      Google Cybersecurity Specialization
                     </a>
-                    <span className="ml-2">
-                      (Skills: Intrusion Detection, SQL, Cybersecurity, Linux,
-                      SVG)
-                    </span>
+                    <div>
+                      <a
+                        href="https://coursera.org/share/68f27b882f1069c19638f8c481baef43"
+                        className="text-teal-600 hover:text-teal-700 font-semibold"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Google Cybersecurity Specialization
+                      </a>
+                      <p className="text-gray-600 text-sm mt-1">
+                        (Skills: Intrusion Detection, SQL, Cybersecurity, Linux,
+                        SVG)
+                      </p>
+                    </div>
                   </li>
-                  <li className="flex items-center">
+                  <li className="flex items-start">
                     <a
                       href="https://coursera.org/share/15f2abbd03176c034f3df0606f2a4412"
-                      className="text-blue-600 hover:underline"
+                      className="text-teal-600 hover:text-teal-700 transition duration-300"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       <img
                         src="./assets/GoogleUX.png"
                         alt="Google UX Design Certificate"
-                        className="w-24 h-16 rounded-md mr-2"
+                        className="w-24 h-16 rounded-md mr-3 object-cover shadow-sm hover-scale"
                       />
-                      Google UX Design Specialization
                     </a>
-                    <span className="ml-2">
-                      (Skills: Figma, UX, Adobe XD, Wireframing)
-                    </span>
+                    <div>
+                      <a
+                        href="https://coursera.org/share/15f2abbd03176c034f3df0606f2a4412"
+                        className="text-teal-600 hover:text-teal-700 font-semibold"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Google UX Design Specialization
+                      </a>
+                      <p className="text-gray-600 text-sm mt-1">
+                        (Skills: Figma, UX, Adobe XD, Wireframing)
+                      </p>
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -641,35 +731,35 @@
       const Research = () => {
         const [isResearchOpen, setIsResearchOpen] = useState(false);
         return (
-          <section id="research" className="py-20 bg-gray-100">
+          <section id="research" className="py-24 bg-gray-100">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <h2 className="text-4xl font-bold text-center mb-10 text-gray-800">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-slide-up">
                 Research Work
               </h2>
-              <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl font-semibold mb-2">
+              <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md hover-scale card-shine transition-shadow animate-slide-up">
+                <h3 className="text-xl font-semibold mb-3 text-gray-800">
                   Merging Fun and Learning: The Kidutainment Game App for
                   Cognitive Skill Development
                 </h3>
-                <p className="text-gray-600 mb-2">
+                <p className="text-gray-600 mb-4">
                   INTERNATIONAL RESEARCH JOURNAL OF MODERNIZATION IN ENGINEERING
                   TECHNOLOGY AND SCIENCE (IRJMETS)
                   <br />
                   Volume 7, Issue 5, May 2025 || PAPER ID: IRJMETS70500060028
                 </p>
-                <div className="flex space-x-4 mb-4">
+                <div className="flex flex-wrap gap-4 mb-6">
                   <a
                     href="./assets/ResearchCert.png"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:opacity-75 transition duration-300"
+                    className="hover:opacity-80 transition duration-300"
                   >
                     <img
                       src="./assets/ResearchCert.png"
                       alt="Research Certificate"
-                      className="w-24 h-16 rounded-md object-cover"
+                      className="w-24 h-16 rounded-md object-cover shadow-sm hover-scale"
                     />
-                    <p className="text-blue-600 text-sm text-center mt-1 hover:underline">
+                    <p className="text-teal-600 text-sm text-center mt-2 hover:underline">
                       View Certificate
                     </p>
                   </a>
@@ -677,32 +767,24 @@
                     href="./assets/Kidutainment_Research_Paper.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:opacity-75 transition duration-300"
+                    className="hover:opacity-80 transition duration-300"
                   >
                     <img
                       src="./assets/ResearchThumb.png"
                       alt="Research Paper Thumbnail"
-                      className="w-24 h-16 rounded-md object-cover"
+                      className="w-24 h-16 rounded-md object-cover shadow-sm hover-scale"
                     />
-                    <p className="text-blue-600 text-sm text-center mt-1 hover:underline">
+                    <p className="text-teal-600 text-sm text-center mt-2 hover:underline">
                       View Research Paper
                     </p>
                   </a>
-                </div>
-                <div className="text-center mb-4">
-                  <button
-                    onClick={() => setIsResearchOpen(!isResearchOpen)}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
-                  >
-                    {isResearchOpen ? 'Less' : 'More'}
-                  </button>
                 </div>
                 <div
                   className={`overflow-hidden transition-all duration-500 ease-in-out ${
                     isResearchOpen ? 'max-h-[500px]' : 'max-h-0'
                   }`}
                 >
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-gray-600 mb-4 animate-slide-up">
                     Co-authored a research paper presenting the development of
                     the Kidutainment Game App—an interactive educational
                     platform designed to merge entertainment with learning for
@@ -715,6 +797,14 @@
                     learners, making education more enjoyable and impactful.
                   </p>
                 </div>
+                <div className="text-center">
+                  <button
+                    onClick={() => setIsResearchOpen(!isResearchOpen)}
+                    className="bg-teal-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-teal-700 pulse transition duration-300 shadow-md"
+                  >
+                    {isResearchOpen ? 'Less' : 'More'}
+                  </button>
+                </div>
               </div>
             </div>
           </section>
@@ -723,74 +813,71 @@
 
       // Contact Component
       const Contact = () => (
-        <section id="contact" className="py-20 bg-gray-900 text-white">
+        <section
+          id="contact"
+          className="py-24 bg-gradient-to-r from-gray-900 to-gray-800 text-white"
+        >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-4xl font-bold text-center mb-10">Contact Me</h2>
-            <div className="max-w-lg mx-auto">
-              <p className="text-lg text-center mb-6">
+            <h2 className="text-4xl font-bold text-center mb-12 animate-slide-up">
+              Contact Me
+            </h2>
+            <div className="max-w-lg mx-auto text-center">
+              <p className="text-lg mb-8 font-light animate-slide-up">
                 Connect with me via email or social media!
               </p>
-              <div className="flex flex-col items-center">
-                <div className="flex justify-center space-x-6 mb-4">
+              <div className="flex justify-center space-x-8 mb-6">
+                {[
+                  {
+                    href: 'mailto:pushkar.singh1102@gmail.com',
+                    icon: 'fas fa-envelope',
+                    title: 'Email',
+                  },
+                  {
+                    href: 'https://www.linkedin.com/in/pushkar-singh-a05607237',
+                    icon: 'fab fa-linkedin',
+                    title: 'LinkedIn',
+                  },
+                  {
+                    href: 'https://github.com/pushkar1102',
+                    icon: 'fab fa-github',
+                    title: 'GitHub',
+                  },
+                  {
+                    href: 'https://www.codechef.com/users/pushkarsingh11',
+                    icon: 'fas fa-code',
+                    title: 'Codechef',
+                  },
+                  {
+                    href: 'https://g.dev/PushkarSingh_Medicaps',
+                    icon: 'fab fa-google',
+                    title: 'Google Developer Profile',
+                  },
+                  {
+                    href: './assets/Resume.pdf',
+                    icon: 'fas fa-file-download',
+                    title: 'Download Resume',
+                    download: true,
+                  },
+                ].map((link, index) => (
                   <a
-                    href="mailto:pushkar.singh1102@gmail.com"
-                    className="text-blue-400 hover:text-blue-300"
-                    target="_blank"
-                    title="Email"
+                    key={link.title}
+                    href={link.href}
+                    className="text-teal-400 hover:text-teal-300 transition duration-300 transform hover:scale-125"
+                    target={link.download ? undefined : '_blank'}
+                    rel={link.download ? undefined : 'noopener noreferrer'}
+                    title={link.title}
+                    {...(link.download ? { download: true } : {})}
+                    style={{ animationDelay: `${index * 0.1}s` }}
                   >
-                    <i className="fas fa-envelope fa-2x"></i>
+                    <i className={`${link.icon} fa-2x`}></i>
                   </a>
-                  <a
-                    href="https://www.linkedin.com/in/pushkar-singh-a05607237"
-                    className="text-blue-400 hover:text-blue-300"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="LinkedIn"
-                  >
-                    <i className="fab fa-linkedin fa-2x"></i>
-                  </a>
-                  <a
-                    href="https://github.com/pushkar1102"
-                    className="text-blue-400 hover:text-blue-300"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="GitHub"
-                  >
-                    <i className="fab fa-github fa-2x"></i>
-                  </a>
-                  <a
-                    href="https://www.codechef.com/users/pushkarsingh11"
-                    className="text-blue-400 hover:text-blue-300"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Codechef"
-                  >
-                    <i className="fas fa-code fa-2x"></i>
-                  </a>
-                  <a
-                    href="https://g.dev/PushkarSingh_Medicaps"
-                    className="text-blue-400 hover:text-blue-300"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Google Developer Profile"
-                  >
-                    <i className="fab fa-google fa-2x"></i>
-                  </a>
-                  <a
-                    href="./assets/Resume.pdf"
-                    className="text-blue-400 hover:text-blue-300"
-                    download
-                    title="Download Resume"
-                  >
-                    <i className="fas fa-file-download fa-2x"></i>
-                  </a>
-                </div>
-                <p className="text-sm text-gray-400 text-center">
-                  Email: pushkar.singh1102@gmail.com (copy if link doesn't work)
-                  <br />
-                  Mobile: (+91)8827114521
-                </p>
+                ))}
               </div>
+              <p className="text-sm text-gray-300 animate-slide-up">
+                Email: pushkar.singh1102@gmail.com (copy if link doesn't work)
+                <br />
+                Mobile: (+91)8827114521
+              </p>
             </div>
           </div>
         </section>
@@ -798,9 +885,9 @@
 
       // Footer Component
       const Footer = () => (
-        <footer className="bg-gray-800 text-white py-6">
+        <footer className="bg-gray-800 text-white py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p className="text-center">
+            <p className="text-center text-gray-300 animate-slide-up">
               © {new Date().getFullYear()} Pushkar Singh. All rights reserved.
             </p>
           </div>
