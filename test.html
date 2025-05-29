@@ -3,16 +3,1149 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Test</title>
+    <title>Pushkar Singh - Portfolio</title>
+    <meta
+      name="description"
+      content="Portfolio of Pushkar Singh, a Game and Software Developer specializing in Unity, C#, Python, and Java."
+    />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React and ReactDOM CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"></script>
+    <!-- Babel for JSX -->
+    <script
+      src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"
+      data-type="module"
+      data-presets="react"
+    ></script>
+    <!-- Font Awesome for Contact Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <!-- Google Fonts for Modern Typography -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Particles.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8fafc;
+        position: relative;
+        margin: 0;
+      }
+      /* Particle Background */
+      #particles-js {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: linear-gradient(45deg, #1a1a2e, #16213e);
+        opacity: 0.8;
+      }
+      /* Ensure content is above particles */
+      #root {
+        position: relative;
+        z-index: 1;
+      }
+      /* Fade and Scale Animation */
+      .animate-fade-scale {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+        animation: fadeScale 0.8s ease-out forwards;
+      }
+      @keyframes fadeScale {
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+      /* Bounce Animation for Buttons */
+      .bounce {
+        transition: transform 0.3s ease;
+      }
+      .bounce:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+      /* Ripple Effect for Buttons */
+      .ripple {
+        position: relative;
+        overflow: hidden;
+      }
+      .ripple::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s ease, height 0.6s ease;
+      }
+      .ripple:hover::after {
+        width: 300%;
+        height: 300%;
+      }
+      /* Card Glow Effect */
+      .card-glow {
+        position: relative;
+        transition: box-shadow 0.3s ease;
+      }
+      .card-glow:hover {
+        box-shadow: 0 0 20px rgba(45, 212, 191, 0.5);
+      }
+      /* Image Rotate Effect */
+      .image-rotate {
+        transition: transform 0.4s ease;
+      }
+      .image-rotate:hover {
+        transform: rotate(5deg) scale(1.05);
+      }
+      /* Navbar Link Slide Effect */
+      .nav-link {
+        position: relative;
+      }
+      .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background: linear-gradient(to right, #2dd4bf, #3b82f6);
+        transition: width 0.3s ease;
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+      /* Background Gradient Animation */
+      .bg-animated {
+        background: linear-gradient(45deg, #2dd4bf, #3b82f6, #a855f7);
+        background-size: 200% 200%;
+        animation: gradientShift 10s ease infinite;
+      }
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      /* Scroll-Triggered Animation */
+      .scroll-reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      .scroll-reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      /* Cursor for Typewriter Effect */
+      .cursor {
+        animation: blink 0.7s infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- Particle Background Container -->
+    <div id="particles-js"></div>
+    <div id="root">
+      <p class="text-center p-10 text-gray-500">
+        Loading portfolio... If this persists, check the console (F12) for
+        errors.
+      </p>
+    </div>
     <script type="text/babel">
-      const root = ReactDOM.createRoot(document.getElementById('root'));
-      root.render(<h1>Hello, World!</h1>);
+      const { useState, useEffect } = React;
+
+      // Initialize Particles.js
+      useEffect(() => {
+        if (window.particlesJS) {
+          particlesJS('particles-js', {
+            particles: {
+              number: { value: 80, density: { enable: true, value_area: 800 } },
+              color: { value: '#2dd4bf' },
+              shape: {
+                type: 'circle',
+                stroke: { width: 0, color: '#000000' },
+              },
+              opacity: {
+                value: 0.5,
+                random: false,
+                anim: { enable: false },
+              },
+              size: {
+                value: 3,
+                random: true,
+                anim: { enable: false },
+              },
+              line_linked: {
+                enable: true,
+                distance: 150,
+                color: '#2dd4bf',
+                opacity: 0.4,
+                width: 1,
+              },
+              move: {
+                enable: true,
+                speed: 2,
+                direction: 'none',
+                random: false,
+                straight: false,
+                out_mode: 'out',
+                bounce: false,
+              },
+            },
+            interactivity: {
+              detect_on: 'canvas',
+              events: {
+                onhover: { enable: true, mode: 'repulse' },
+                onclick: { enable: true, mode: 'push' },
+                resize: true,
+              },
+              modes: {
+                repulse: { distance: 100, duration: 0.4 },
+                push: { particles_nb: 4 },
+              },
+            },
+            retina_detect: true,
+          });
+        }
+      }, []);
+
+      // Fallback Component
+      const Fallback = () => (
+        <div className="text-center p-10">
+          <h1 className="text-3xl text-red-500 font-semibold animate-fade-scale">
+            Failed to Load Portfolio
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Please check the console (F12) for errors or refresh the page.
+          </p>
+        </div>
+      );
+
+      // Scroll Reveal Hook
+      const useScrollReveal = () => {
+        useEffect(() => {
+          const elements = document.querySelectorAll('.scroll-reveal');
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('visible');
+                }
+              });
+            },
+            { threshold: 0.1 }
+          );
+          elements.forEach((el) => observer.observe(el));
+          return () => observer.disconnect();
+        }, []);
+      };
+
+      // Navbar Component
+      const Navbar = () => {
+        const [isOpen, setIsOpen] = useState(false);
+        useScrollReveal();
+
+        return (
+          <nav className="bg-gradient-to-r from-gray-900 to-gray-800 text-white fixed w-full z-20 top-0 shadow-lg">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex justify-between h-16 items-center">
+                <div className="flex items-center animate-fade-scale">
+                  <img
+                    src="./assets/profileimg.jpg"
+                    alt="Pushkar Singh Logo"
+                    className="w-10 h-10 rounded-full object-cover mr-3 border-2 border-teal-400 image-rotate"
+                  />
+                  <span className="text-xl font-semibold tracking-tight">
+                    Pushkar Singh
+                  </span>
+                </div>
+                <div className="hidden md:flex items-center space-x-6">
+                  {[
+                    'Home',
+                    'About',
+                    'Education',
+                    'Experience',
+                    'Projects',
+                    'Skills',
+                    'Achievements',
+                    'Research',
+                    'Contact',
+                  ].map((item) => (
+                    <a
+                      key={item}
+                      href={`#${item.toLowerCase()}`}
+                      className="text-sm font-medium text-gray-200 hover:text-teal-400 nav-link transition duration-300 scroll-reveal"
+                    >
+                      {item}
+                    </a>
+                  ))}
+                </div>
+                <div className="md:hidden flex items-center">
+                  <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="text-gray-200 hover:text-teal-400 focus:outline-none bounce"
+                    aria-label="Toggle menu"
+                  >
+                    <svg
+                      className="h-6 w-6"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d={
+                          isOpen
+                            ? 'M6 18L18 6M6 6l12 12'
+                            : 'M4 6h16M4 12h16M4 18h16'
+                        }
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+            {isOpen && (
+              <div className="md:hidden bg-gray-900 shadow-lg animate-fade-scale">
+                <div className="px-4 pt-2 pb-4 space-y-2">
+                  {[
+                    'Home',
+                    'About',
+                    'Education',
+                    'Experience',
+                    'Projects',
+                    'Skills',
+                    'Achievements',
+                    'Research',
+                    'Contact',
+                  ].map((item) => (
+                    <a
+                      key={item}
+                      href={`#${item.toLowerCase()}`}
+                      className="block text-gray-200 hover:bg-gray-800 hover:text-teal-400 px-3 py-2 rounded-md text-base font-medium transition duration-300"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </nav>
+        );
+      };
+
+      // Hero Component with Typewriter Effect
+      const Hero = () => {
+        const [displayRole, setDisplayRole] = useState('');
+        const roles = [
+          'Pushkar Singh',
+          'game developer',
+          'web developer',
+          'software developer',
+        ];
+
+        useEffect(() => {
+          let isMounted = true;
+          let roleIndex = 0;
+          let charIndex = 0;
+          let isTyping = true;
+
+          const typeWriter = () => {
+            if (!isMounted) return;
+            const currentRole = roles[roleIndex];
+            setDisplayRole(currentRole.substring(0, charIndex));
+            if (isTyping) {
+              charIndex++;
+              if (charIndex > currentRole.length) {
+                isTyping = false;
+                setTimeout(typeWriter, 1500); // Pause after typing
+              } else {
+                setTimeout(typeWriter, 100); // Typing speed
+              }
+            } else {
+              charIndex--;
+              if (charIndex < 0) {
+                isTyping = true;
+                roleIndex = (roleIndex + 1) % roles.length;
+                setTimeout(typeWriter, 500); // Pause before next role
+              } else {
+                setTimeout(typeWriter, 50); // Deleting speed
+              }
+            }
+          };
+          typeWriter();
+          return () => {
+            isMounted = false;
+          };
+        }, []);
+
+        return (
+          <section
+            id="home"
+            className="bg-animated min-h-screen flex items-center justify-center text-white pt-16"
+          >
+            <div className="text-center px-4 animate-fade-scale">
+              <img
+                src="./assets/profileimg.jpg"
+                alt="Pushkar Singh Profile Picture"
+                className="w-36 h-36 rounded-full mx-auto mb-6 object-cover shadow-xl border-4 border-white/30 image-rotate"
+              />
+              <h1 className="text-5xl md:text-6xl font-bold mb-4 tracking-tight scroll-reveal">
+                Hi, I'm <span>{displayRole}</span>
+                <span className="cursor">|</span>
+              </h1>
+              <a
+                href="#contact"
+                className="inline-block bg-white text-teal-600 px-8 py-3 rounded-full font-semibold text-lg ripple bounce transition duration-300 shadow-lg"
+              >
+                Get in Touch
+              </a>
+            </div>
+          </section>
+        );
+      };
+
+      // About Component
+      const About = () => {
+        const [isAboutOpen, setIsAboutOpen] = useState(false);
+        useScrollReveal();
+        return (
+          <section id="about" className="py-24 bg-gray-100">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-fade-scale scroll-reveal">
+                About Me
+              </h2>
+              <p className="text-lg text-gray-700 text-center max-w-4xl mx-auto mb-8 scroll-reveal">
+                <strong>I’m a Game, Web, and Software Developer </strong>
+              </p>
+              <div
+                className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                  isAboutOpen ? 'max-h-[1000px]' : 'max-h-0'
+                }`}
+              >
+                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-6 scroll-reveal">
+                  with hands-on experience in <strong>Unity (C#)</strong>,{' '}
+                  <strong>Java</strong>, <strong>Python</strong>, and
+                  object-oriented programming. I specialize in building
+                  interactive and engaging experiences that combine creativity
+                  with functionality.
+                </p>
+                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-6 scroll-reveal">
+                  As the creator of the <strong>Kidutainment Game App</strong>,
+                  I’ve developed several educational mini-games that help
+                  children develop cognitive, logical, and creative skills. My
+                  work has been recognized through a published research paper in{' '}
+                  <strong>IRJMETS</strong>, showcasing the impact of gamified
+                  learning in early education.
+                </p>
+                <p className="text-lg text-gray-700 text-center max-w-3xl mx-auto scroll-reveal">
+                  During my internship at <strong>Wollybee LLP</strong>, I
+                  refined my skills in game design, UI/UX development, asset
+                  creation, and Agile collaboration. I’m passionate about using
+                  modern tools and technologies to create meaningful digital
+                  experiences and continuously improve as a full-stack
+                  developer.
+                </p>
+              </div>
+              <div className="text-center mt-6">
+                <button
+                  onClick={() => setIsAboutOpen(!isAboutOpen)}
+                  className="bg-teal-600 text-white px-6 py-3 rounded-full font-semibold ripple bounce transition duration-300 shadow-md"
+                >
+                  {isAboutOpen ? 'Less' : 'More'}
+                </button>
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      // Education Component
+      const Education = () => {
+        useScrollReveal();
+        return (
+          <section id="education" className="py-24 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-fade-scale scroll-reveal">
+                Education
+              </h2>
+              <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                  {
+                    title: 'B.Tech CSE',
+                    details: 'Medi-Caps University, 2021–2025, 8.61/10',
+                  },
+                  {
+                    title: '12th CBSE',
+                    details: 'Pioneer Convent School, 2019–2020, 75.2%',
+                  },
+                  {
+                    title: '10th CBSE',
+                    details: 'St. Michael’s School, 2017–2018, 77.8%',
+                  },
+                ].map((edu, index) => (
+                  <div
+                    key={edu.title}
+                    className="bg-gray-50 p-6 rounded-xl shadow-md card-glow scroll-reveal"
+                    style={{ animationDelay: `${index * 0.2}s` }}
+                  >
+                    <h3 className="text-lg font-semibold mb-2 text-gray-800">
+                      {edu.title}
+                    </h3>
+                    <p className="text-base text-gray-600">{edu.details}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      // Experience Component
+      const Experience = () => {
+        const [isExperienceOpen, setIsExperienceOpen] = useState(false);
+        useScrollReveal();
+        return (
+          <section id="experience" className="py-24 bg-gray-100">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-fade-scale scroll-reveal">
+                Experience
+              </h2>
+              <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md card-glow scroll-reveal">
+                <div className="flex items-center mb-4">
+                  <img
+                    src="./assets/game.png"
+                    alt="Wollybee LLP Logo"
+                    className="w-12 h-10 rounded-full border-2 border-teal-400 image-rotate"
+                  />
+                  <h3 className="text-xl font-semibold text-gray-800 ml-3">
+                    Game Development Intern
+                  </h3>
+                </div>
+                <p className="text-gray-600 mb-4">
+                  Wollybee LLP, Indore
+                  <br />
+                  June 2024–September 2024
+                </p>
+                <div
+                  className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                    isExperienceOpen ? 'max-h-[500px]' : 'max-h-0'
+                  }`}
+                >
+                  <ul className="list-disc pl-5 text-gray-600 space-y-2 scroll-reveal">
+                    <li>
+                      Developed educational games using Unity and C#, enhancing
+                      kid's learning in English, math, and environmental
+                      awareness.
+                    </li>
+                    <li>
+                      Designed game assets with Adobe Illustrator, improving
+                      visual engagement.
+                    </li>
+                    <li>
+                      Collaborated with cross-functional teams to integrate game
+                      mechanics, boosting user interaction by 30%.
+                    </li>
+                    <li>
+                      Conducted playtesting and debugging, reducing bugs by 25%.
+                    </li>
+                  </ul>
+                </div>
+                <div className="text-center mt-6">
+                  <button
+                    onClick={() => setIsExperienceOpen(!isExperienceOpen)}
+                    className="bg-teal-600 text-white px-6 py-3 rounded-full font-semibold ripple bounce transition duration-300 shadow-md"
+                  >
+                    {isExperienceOpen ? 'Less' : 'More'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      // Projects Component
+      const Projects = () => {
+        const projects = [
+          {
+            title: 'SecurePass',
+            description:
+              'A robust password management software built with Python, featuring AES encryption, bcrypt authentication, and a Tkinter GUI. Utilizes SQLite for data management, offering strong password generation and backup functionalities.',
+            skills: [
+              'Python',
+              'JSON',
+              'Database Management',
+              'File Handling',
+              'UX',
+            ],
+            link: 'https://github.com/pushkar1102/securepass',
+            image: './assets/SecurePass.png',
+          },
+          {
+            title: 'SpellCrash Game',
+            description:
+              'An edutainment game for kids (3-8 years) built in Unity with C#, teaching English spellings across 26 levels. Designed visuals using Adobe Illustrator, part of the Kidutainment Application.',
+            skills: ['Unity', 'C#', 'Adobe Illustrator', 'Game Development'],
+            link: 'https://github.com/pushkar1102/spellcrash',
+            image: './assets/SpellCrash.png',
+          },
+          {
+            title: 'TonyInMaze Game',
+            description:
+              'An educational Unity game where players navigate mazes to collect apples, learning problem-solving and cardinal directions with a mini-map and compass.',
+            skills: ['Unity', 'C#', 'Game Design', 'Game Development'],
+            link: 'https://github.com/pushkar1102/tonyinmaze',
+            image: './assets/TonnyInMaze.png',
+          },
+          {
+            title: 'RecyclingRocket Game',
+            description:
+              'A Unity-based educational game teaching kids waste segregation. Players sort waste into bins to fuel a rocket, promoting environmental awareness.',
+            skills: ['Unity', 'C#', 'Game Design', 'Game Development'],
+            link: 'https://github.com/pushkar1102/recyclingrocket',
+            image: './assets/RecyclingRocket.png',
+          },
+          {
+            title: 'BabyQ The Hero',
+            description:
+              'A decision-making game in Unity where players choose healthy or junk food, affecting the character’s transformation. Promotes nutrition awareness.',
+            skills: ['Unity', 'C#', 'Game Design', 'Game Development'],
+            link: 'https://github.com/pushkar1102/babyq',
+            image: './assets/BabyQTheHero.png',
+          },
+          {
+            title: 'Jeff the Doctor',
+            description:
+              'An educational Unity game teaching kids to diagnose symptoms using a thermometer mechanic, fostering health awareness with engaging visuals.',
+            skills: ['Unity', 'C#', 'Game Design', 'Game Development'],
+            link: 'https://github.com/pushkar1102/jeffthedoctor',
+            image: './assets/JeffTheDoctor.png',
+          },
+          {
+            title: 'Brick Smasher Game',
+            description:
+              'A Unity-based game teaching math through smashing number bricks to solve equations, featuring dynamic levels and realistic physics.',
+            skills: ['Unity', 'C#', 'Game Design', 'Game Development'],
+            link: 'https://github.com/pushkar1102/bricksmasher',
+            image: './assets/BrickSmasher.png',
+          },
+        ];
+        useScrollReveal();
+        return (
+          <section id="projects" className="py-24 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-fade-scale scroll-reveal">
+                My Projects
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {projects.map((project, index) => (
+                  <div
+                    key={project.title}
+                    className="bg-gray-50 p-6 rounded-xl shadow-md card-glow scroll-reveal"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <img
+                      src={project.image}
+                      alt={`Screenshot of ${project.title}`}
+                      className="w-50 h-50 object-cover rounded-lg mb-4 shadow-sm image-rotate"
+                    />
+                    <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                      {project.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                      {project.description}
+                    </p>
+                    <p className="text-gray-500 text-sm mb-4">
+                      <strong>Skills:</strong> {project.skills.join(', ')}
+                    </p>
+                    <a
+                      href={project.link}
+                      className="text-teal-600 hover:text-teal-700 font-semibold transition duration-300 ripple"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View Project
+                    </a>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      // Skills Component
+      const Skills = () => {
+        const skills = [
+          {
+            name: 'C#',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/csharp/csharp-original.svg',
+          },
+          {
+            name: 'Java',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/java/java-original.svg',
+          },
+          {
+            name: 'Python',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/python/python-original.svg',
+          },
+          {
+            name: 'OOP',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/javascript/javascript-original.svg',
+          },
+          {
+            name: 'JavaScript',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/javascript/javascript-original.svg',
+          },
+          {
+            name: 'HTML',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/html5/html5-original.svg',
+          },
+          {
+            name: 'CSS',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/css3/css3-original.svg',
+          },
+          {
+            name: 'React',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/react/react-original.svg',
+          },
+          {
+            name: 'Tailwind CSS',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/tailwindcss/tailwindcss-original.svg',
+          },
+          {
+            name: 'Express.js',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/express/express-original.svg',
+          },
+          {
+            name: 'Node.js',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/nodejs/nodejs-original.svg',
+          },
+          {
+            name: 'REST APIs',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/javascript/javascript-original.svg',
+          },
+          {
+            name: 'Git',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/git/git-original.svg',
+          },
+          {
+            name: 'Unity',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/unity/unity-original.svg',
+          },
+          {
+            name: 'Game Design',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/unity/unity-original.svg',
+          },
+          {
+            name: 'Game Development',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/unity/unity-original.svg',
+          },
+          {
+            name: 'Database Management',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/mysql/mysql-original.svg',
+          },
+          {
+            name: 'SQL',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/mysql/mysql-original.svg',
+          },
+          {
+            name: 'MongoDB',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/mongodb/mongodb-original.svg',
+          },
+          {
+            name: 'JSON',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/json/json-plain.svg',
+          },
+          {
+            name: 'UI Development',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/css3/css3-original.svg',
+          },
+          {
+            name: 'Adobe Illustrator',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/illustrator/illustrator-plain.svg',
+          },
+          {
+            name: 'Figma',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/figma/figma-original.svg',
+          },
+          {
+            name: 'UX',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/figma/figma-original.svg',
+          },
+          {
+            name: 'Wireframing',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/figma/figma-original.svg',
+          },
+          {
+            name: 'Cybersecurity',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/linux/linux-original.svg',
+          },
+          {
+            name: 'Intrusion Detection',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/linux/linux-original.svg',
+          },
+          {
+            name: 'SIEM',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/linux/linux-original.svg',
+          },
+          {
+            name: 'Linux',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/linux/linux-original.svg',
+          },
+          {
+            name: 'File Handling',
+            logo: 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons/filezilla/filezilla-plain.svg',
+          },
+        ];
+        useScrollReveal();
+        return (
+          <section id="skills" className="py-24 bg-gray-100">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-fade-scale scroll-reveal">
+                My Skills
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+                {skills.map((skill, index) => (
+                  <div
+                    key={skill.name}
+                    className="bg-white p-4 rounded-xl shadow-md card-glow scroll-reveal"
+                    style={{ animationDelay: `${index * 0.05}s` }}
+                  >
+                    <img
+                      src={skill.logo}
+                      alt={`${skill.name} logo`}
+                      className="w-12 h-12 mb-3 image-rotate"
+                    />
+                    <p className="text-gray-700 text-center text-sm font-medium">
+                      {skill.name}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      // Achievements Component
+      const Achievements = () => {
+        useScrollReveal();
+        return (
+          <section id="achievements" className="py-24 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-fade-scale scroll-reveal">
+                Achievements & Certifications
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-gray-50 p-6 rounded-xl shadow-md card-glow scroll-reveal">
+                  <h3 className="text-xl font-semibold mb-4 text-gray-800">
+                    Achievements
+                  </h3>
+                  <ul className="list-disc pl-5 text-gray-600 space-y-2">
+                    <li>State Level Athlete in 3000m, 2018</li>
+                    <li>State Level Footballer, 2018</li>
+                  </ul>
+                </div>
+                <div className="bg-gray-50 p-6 rounded-xl shadow-md card-glow scroll-reveal">
+                  <h3 className="text-xl font-semibold mb-4 text-gray-800">
+                    Certifications
+                  </h3>
+                  <ul className="list-none space-y-4">
+                    <li className="flex items-start">
+                      <a
+                        href="https://coursera.org/share/68f27b882f1069c19638f8c481baef43"
+                        className="text-teal-600 hover:text-teal-700 transition duration-300"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img
+                          src="./assets/GoogleCyber.png"
+                          alt="Google Cybersecurity Certificate"
+                          className="w-24 h-16 rounded-md mr-3 object-cover shadow-sm image-rotate"
+                        />
+                      </a>
+                      <div>
+                        <a
+                          href="https://coursera.org/share/68f27b882f1069c19638f8c481baef43"
+                          className="text-teal-600 hover:text-teal-700 font-semibold"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Google Cybersecurity Specialization
+                        </a>
+                        <p className="text-gray-600 text-sm mt-1">
+                          (Skills: Intrusion Detection, SQL, Cybersecurity,
+                          Linux, SVG)
+                        </p>
+                      </div>
+                    </li>
+                    <li className="flex items-start">
+                      <a
+                        href="https://coursera.org/share/15f2abbd03176c034f3df0606f2a4412"
+                        className="text-teal-600 hover:text-teal-700 transition duration-300"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <img
+                          src="./assets/GoogleUX.png"
+                          alt="Google UX Design Certificate"
+                          className="w-24 h-16 rounded-md mr-3 object-cover shadow-sm image-rotate"
+                        />
+                      </a>
+                      <div>
+                        <a
+                          href="https://coursera.org/share/15f2abbd03176c034f3df0606f2a4412"
+                          className="text-teal-600 hover:text-teal-700 font-semibold"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Google UX Design Specialization
+                        </a>
+                        <p className="text-gray-600 text-sm mt-1">
+                          (Skills: Figma, UX, Adobe XD, Wireframing)
+                        </p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      // Research Component
+      const Research = () => {
+        const [isResearchOpen, setIsResearchOpen] = useState(false);
+        useScrollReveal();
+        return (
+          <section id="research" className="py-24 bg-gray-100">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-4xl font-bold text-center mb-12 text-gray-800 animate-fade-scale scroll-reveal">
+                Research Work
+              </h2>
+              <div className="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md card-glow scroll-reveal">
+                <h3 className="text-xl font-semibold mb-3 text-gray-800">
+                  Merging Fun and Learning: The Kidutainment Game App for
+                  Cognitive Skill Development
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  INTERNATIONAL RESEARCH JOURNAL OF MODERNIZATION IN ENGINEERING
+                  TECHNOLOGY AND SCIENCE (IRJMETS)
+                  <br />
+                  Volume 7, Issue 5, May 2025 || PAPER ID: IRJMETS70500060028
+                </p>
+                <div className="flex flex-wrap gap-4 mb-6">
+                  <a
+                    href="./assets/ResearchCert.png"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-80 transition duration-300"
+                  >
+                    <img
+                      src="./assets/ResearchCert.png"
+                      alt="Research Certificate"
+                      className="w-24 h-16 rounded-md object-cover shadow-sm image-rotate"
+                    />
+                    <p className="text-teal-600 text-sm text-center mt-2 hover:underline">
+                      View Certificate
+                    </p>
+                  </a>
+                  <a
+                    href="./assets/Kidutainment_Research_Paper.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-80 transition duration-300"
+                  >
+                    <img
+                      src="./assets/ResearchThumb.png"
+                      alt="Research Paper Thumbnail"
+                      className="w-24 h-16 rounded-md object-cover shadow-sm image-rotate"
+                    />
+                    <p className="text-teal-600 text-sm text-center mt-2 hover:underline">
+                      View Research Paper
+                    </p>
+                  </a>
+                </div>
+                <div
+                  className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                    isResearchOpen ? 'max-h-[500px]' : 'max-h-0'
+                  }`}
+                >
+                  <p className="text-gray-600 mb-4 scroll-reveal">
+                    Co-authored a research paper presenting the development of
+                    the Kidutainment Game App—an interactive educational
+                    platform designed to merge entertainment with learning for
+                    children. The app features a suite of mini-games focused on
+                    enhancing cognitive abilities, such as logical thinking,
+                    memory, spelling, environmental awareness, and basic
+                    arithmetic. Through engaging gameplay mechanics and
+                    age-appropriate content, the application aims to foster
+                    curiosity, creativity, and problem-solving skills in young
+                    learners, making education more enjoyable and impactful.
+                  </p>
+                </div>
+                <div className="text-center">
+                  <button
+                    onClick={() => setIsResearchOpen(!isResearchOpen)}
+                    className="bg-teal-600 text-white px-6 py-3 rounded-full font-semibold ripple bounce transition duration-300 shadow-md"
+                  >
+                    {isResearchOpen ? 'Less' : 'More'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      // Contact Component
+      const Contact = () => {
+        useScrollReveal();
+        return (
+          <section id="contact" className="py-24 bg-animated text-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-4xl font-bold text-center mb-12 animate-fade-scale scroll-reveal">
+                Contact Me
+              </h2>
+              <div className="max-w-lg mx-auto text-center">
+                <p className="text-lg mb-8 font-light scroll-reveal">
+                  Connect with me via email or social media!
+                </p>
+                <div className="flex justify-center space-x-8 mb-6">
+                  {[
+                    {
+                      href: 'mailto:pushkar.singh1102@gmail.com',
+                      icon: 'fas fa-envelope',
+                      title: 'Email',
+                    },
+                    {
+                      href: 'https://www.linkedin.com/in/pushkar-singh1102',
+                      icon: 'fab fa-linkedin',
+                      title: 'LinkedIn',
+                    },
+                    {
+                      href: 'https://github.com/pushkar1102',
+                      icon: 'fab fa-github',
+                      title: 'GitHub',
+                    },
+                    {
+                      href: 'https://www.codechef.com/users/pushkarsingh11',
+                      icon: 'fas fa-code',
+                      title: 'Codechef',
+                    },
+                    {
+                      href: 'https://g.dev/PushkarDev1102',
+                      icon: 'fab fa-google',
+                      title: 'Google Developer Profile',
+                    },
+                    {
+                      href: './assets/Resume.pdf',
+                      icon: 'fas fa-file-download',
+                      title: 'Download Resume',
+                      download: true,
+                    },
+                  ].map((link, index) => (
+                    <a
+                      key={link.title}
+                      href={link.href}
+                      className="text-teal-300 hover:text-teal-200 transition duration-300 transform hover:scale-125 scroll-reveal"
+                      target={link.download ? undefined : '_blank'}
+                      rel={link.download ? undefined : 'noopener noreferrer'}
+                      title={link.title}
+                      {...(link.download ? { download: true } : {})}
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <i className={`${link.icon} fa-2x`}></i>
+                    </a>
+                  ))}
+                </div>
+                <p className="text-sm text-gray-300 scroll-reveal">
+                  Email: pushkar.singh1102@gmail.com (copy if link doesn't work)
+                  <br />
+                  Mobile: (+91)8827114521
+                </p>
+              </div>
+            </div>
+          </section>
+        );
+      };
+
+      // Footer Component
+      const Footer = () => (
+        <footer className="bg-gray-800 text-white py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p className="text-center text-gray-300 animate-fade-scale scroll-reveal">
+              © {new Date().getFullYear()} Pushkar Singh. All rights reserved.
+            </p>
+          </div>
+        </footer>
+      );
+
+      // App Component
+      const App = () => (
+        <div>
+          <Navbar />
+          <Hero />
+          <About />
+          <Education />
+          <Experience />
+          <Projects />
+          <Skills />
+          <Achievements />
+          <Research />
+          <Contact />
+          <Footer />
+        </div>
+      );
+
+      // Render with Error Handling
+      try {
+        if (!React || !ReactDOM) {
+          throw new Error('React or ReactDOM failed to load from CDN.');
+        }
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+      } catch (error) {
+        console.error('Error rendering React app:', error);
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Fallback />);
+      }
     </script>
   </body>
 </html>
