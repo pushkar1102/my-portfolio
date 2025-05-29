@@ -277,9 +277,51 @@
         );
       };
 
-      // Hero Component
+      // Hero Component with Typewriter Effect
       const Hero = () => {
-        useScrollReveal();
+        const [displayRole, setDisplayRole] = useState('');
+        const roles = [
+          'Pushkar Singh',
+          'game developer',
+          'web developer',
+          'software developer',
+        ];
+
+        useEffect(() => {
+          let isMounted = true;
+          let roleIndex = 0;
+          let charIndex = 0;
+          let isTyping = true;
+
+          const typeWriter = () => {
+            if (!isMounted) return;
+            const currentRole = roles[roleIndex];
+            setDisplayRole(currentRole.substring(0, charIndex));
+            if (isTyping) {
+              charIndex++;
+              if (charIndex > currentRole.length) {
+                isTyping = false;
+                setTimeout(typeWriter, 1500); // Pause after typing
+              } else {
+                setTimeout(typeWriter, 100); // Typing speed
+              }
+            } else {
+              charIndex--;
+              if (charIndex < 0) {
+                isTyping = true;
+                roleIndex = (roleIndex + 1) % roles.length;
+                setTimeout(typeWriter, 500); // Pause before next role
+              } else {
+                setTimeout(typeWriter, 50); // Deleting speed
+              }
+            }
+          };
+          typeWriter();
+          return () => {
+            isMounted = false;
+          };
+        }, []);
+
         return (
           <section
             id="home"
@@ -292,11 +334,9 @@
                 className="w-36 h-36 rounded-full mx-auto mb-6 object-cover shadow-xl border-4 border-white/30 image-rotate"
               />
               <h1 className="text-5xl md:text-6xl font-bold mb-4 tracking-tight scroll-reveal">
-                Hi, I'm Pushkar Singh
+                I am <span>{displayRole}</span>
+                <span className="cursor">|</span>
               </h1>
-              <p className="text-xl md:text-2xl mb-6 font-light max-w-xl mx-auto scroll-reveal">
-                Game & Software Developer
-              </p>
               <a
                 href="#contact"
                 className="inline-block bg-white text-teal-600 px-8 py-3 rounded-full font-semibold text-lg ripple bounce transition duration-300 shadow-lg"
